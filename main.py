@@ -54,6 +54,7 @@ clock = pygame.time.Clock()
 #midiFile = "C:\\Users\\katzb\\Downloads\\midi for ben.mid"
 #midiFile = "C:\\Users\\katzb\\Downloads\\midi for ben_modified.mid"
 midiFile = "C:\\Users\\katzb\\Downloads\\midi2.mid"
+#midiFile = "C:\\Users\\katzb\\Downloads\\midi2_simple.mid"
 csv_string = py_midicsv.midi_to_csv(midiFile)
 
 noteOnList = []
@@ -71,9 +72,9 @@ FPS = 60
 for index in range(len(csv_string)):
     tempList = csv_string[index].split(',')
     if(tempList[2] == " Note_on_c"):
-        noteOnList.append(Note(int(tempList[1]), remap(int(tempList[4]),0, 88, 0, SCREEN_WIDTH), int(tempList[5])))
+        noteOnList.append(Note(int(tempList[1]), int(tempList[4]), int(tempList[5])))
     if(tempList[2] == " Note_off_c"):
-        noteOffList.append(Note(int(tempList[1]), remap(int(tempList[4]),0, 88, 0, SCREEN_WIDTH), int(tempList[5])))
+        noteOffList.append(Note(int(tempList[1]), int(tempList[4]), int(tempList[5])))
 
 #print(len(noteOnList))
 #print(len(noteOffList))
@@ -87,7 +88,9 @@ if len(noteOnList) == len(noteOffList):
                 yStart = -noteOnList[i].time*TIME_SCALE#start the ys at the negative of time so they start above the screen and will come down
                 yStart = yStart - height + PIANO_OFFSET #need to subtract the height since (x, y) is in the upper left corner, add offset to time with music
                 width = math.floor(SCREEN_WIDTH/88)# split screen into 89 sections, 88 keys plus a little buffer
-                pairedNotes.append(pygame.Rect(noteOffList[j].pitch, yStart, width, height))
+                xStart = int(noteOffList[j].pitch) - 21#convert from C-1 as 0 to A0 as 0
+                xStart = remap(xStart,0, 88, 0, SCREEN_WIDTH)#convert from 0 to 88 to 0 to screen width
+                pairedNotes.append(pygame.Rect(xStart, yStart, width, height))
                 break
 
 notesYfloat = []
@@ -119,7 +122,6 @@ pygame.mixer.music.play()
 running=True
 
 deltaY = float(195/(FPS/TIME_SCALE))
-#deltaY = float(146/(FPS/TIME_SCALE))
 
 while running:
     display_surface.fill(grey)#clear screen
@@ -140,7 +142,7 @@ while running:
             if keyHit: 
                 pygame.draw.rect(display_surface,blue,pairedNotes[index])
             else:
-                pygame.draw.rect(display_surface,black,pairedNotes[index])
+                pygame.draw.rect(display_surface,green,pairedNotes[index])
 
 
    
