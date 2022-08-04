@@ -50,11 +50,9 @@ def remap( x, oMin, oMax, nMin, nMax ):
 
 clock = pygame.time.Clock()
 
-#midiFile = "C:\\Users\\katzb\\Downloads\\simple.mid"
-#midiFile = "C:\\Users\\katzb\\Downloads\\midi for ben.mid"
-#midiFile = "C:\\Users\\katzb\\Downloads\\midi for ben_modified.mid"
+#
+# midiFile = "C:\\Users\\katzb\\Downloads\\simple.mid"
 midiFile = "C:\\Users\\katzb\\Downloads\\midi2.mid"
-#midiFile = "C:\\Users\\katzb\\Downloads\\midi2_simple.mid"
 csv_string = py_midicsv.midi_to_csv(midiFile)
 
 noteOnList = []
@@ -148,10 +146,11 @@ while running:
    
     #generate piano
     for i in range(89):
+        width = math.floor(SCREEN_WIDTH/88)
         if i%12 == 0 or i%12 == 2 or i%12 == 4 or i%12 == 5 or i%12 == 7 or i%12 == 9 or i%12 == 11:#white keys
-            pygame.draw.rect(display_surface, white, pygame.Rect(i*math.floor(SCREEN_WIDTH/88), PIANO_OFFSET, math.floor(SCREEN_WIDTH/88), 100))
+            pygame.draw.rect(display_surface, white, pygame.Rect(i*math.floor(SCREEN_WIDTH/88), PIANO_OFFSET, width, 100))
         else:
-            pygame.draw.rect(display_surface, black,  pygame.Rect(i*math.floor(SCREEN_WIDTH/88), PIANO_OFFSET, math.floor(SCREEN_WIDTH/88), 80))
+            pygame.draw.rect(display_surface, black,  pygame.Rect(i*math.floor(SCREEN_WIDTH/88), PIANO_OFFSET, width, 80))
 
     pygame.draw.rect(display_surface,red,pygame.Rect(0, PIANO_OFFSET, SCREEN_WIDTH, 15))#where notes hit
 
